@@ -15,3 +15,5 @@ client.messages.create({
         console.log(message.sid)
     }
 );
+// host sends a text to server with: 'open password101'
+// everyone 
