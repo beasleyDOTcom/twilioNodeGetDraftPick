@@ -6,6 +6,9 @@
     "ngrok": "^4.2.2",
     "twilio": "^3.67.1"
   },
-  "main": "receiveSms.js"
+  "main": "receiveSms.js",
+  "engines":{
+    "node": "10.19.0"
+  }
   
 }
