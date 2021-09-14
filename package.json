@@ -5,5 +5,7 @@
     "http": "*",
     "ngrok": "^4.2.2",
     "twilio": "^3.67.1"
-  }
+  },
+  "main": "receiveSms.js"
+  
 }
