@@ -17,6 +17,6 @@ app.post('/sms', (req, res) => {
 });
 console.log('this is line 18 and PORT before starting server', PORT);
 
-http.createServer(app).listen(1337, () => {
+http.createServer(app).listen(PORT, () => {
     console.log('Expressive server Glistening on port:', PORT)
 });
