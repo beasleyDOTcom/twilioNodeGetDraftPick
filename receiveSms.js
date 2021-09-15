@@ -67,8 +67,11 @@ async function tryHost(room, index, message) {
                 // command is good
                 if (command === 'open'){
 
-                    rooms[room]['password'] = password;
-                    rooms[room]['host'] = req.body.From;
+                    rooms[room] = {
+                        'password': password,
+                        'host': req.body.From
+                    }
+                    
                     house[room] = [];
                     return 1;
                 }
