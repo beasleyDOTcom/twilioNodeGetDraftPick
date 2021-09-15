@@ -19,7 +19,7 @@ async function tryCloseRoom(room, password, host){
     async function shuffle(){
         // the shuffle in place by calling swap on every index of this.cards arr with a random index 
                 const getIndex = () => Math.floor(Math.random()*house[room].length);
-                async const swap = (arr, a, b) => {
+                const swap = async (arr, a, b) => {
                     let temp = arr[a];
                     arr[a] = arr[b];
                     arr[b] = temp;
