@@ -79,6 +79,8 @@ async function tryHost(room, index, message) {
             }
         }
         else {
+            console.log('this is password: ', password);
+            console.log('this is message[index]', message[index]);
             // bad request
             if (message[index] !== ':') {
                 return 2;
