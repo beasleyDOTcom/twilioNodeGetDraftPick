@@ -15,6 +15,7 @@ app.post('/sms', (req, res) => {
         twiml.toString()
     );
 });
+console.log('this is line 18 and PORT before starting server', PORT);
 
 http.createServer(app).listen(1337, () => {
     console.log('Expressive server Glistening on port:', PORT)
