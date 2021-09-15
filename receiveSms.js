@@ -102,12 +102,14 @@ app.post('/sms', async (req, res) => {
 
     let room = '';
     let index = 0;
-    while (index < req.body.length && req.body[index] !== ':') {
-        room += req.body[index];
+    let message = req.body.Body;
+    while (index < message.length && message[index] !== ':') {
+        room += message[index];
         index++;
     }
+    console.log('this is line109. ' + 'this is message: '+message +' and index: ' + index);
     if (req.body[index] === ':') {
-        let response = await tryHost(room, index, req.body);
+        let response = await tryHost(room, index, message);
         switch(response){
             case 0:
                 twiml.message('Bad request. You must include a valid command. Example1 -> roomba:vacuum:open  Example2 -> roomba:vacuum:close');
@@ -144,7 +146,7 @@ app.post('/sms', async (req, res) => {
             twiml.message('You have been added. Please wait for host to "close the room" (at which time you will receive your random number');
         } 
         else {
-            twiml.message('There is not a room with this name: ', req.body.Body + ' Please ensure you entered the room name correctly.');
+            twiml.message('There is not a room with this name: '+ req.body.Body + '. Please ensure you entered the room name correctly.');
         }
     }
 
