@@ -49,6 +49,7 @@ async function tryHost(room, index, message) {
     if (house[room] === undefined) {
         // this is a new room. Are other requirements met? password and command
         let password = '';
+        index += 1;
         while (index < message.length && message[index] !== ':') {
             password += message[index];
             index++;
