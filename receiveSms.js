@@ -9,10 +9,8 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 app.post('/sms', (req, res) => {
     const twiml = new MessagingResponse();
-    console.log('this is req: ', req);
-    console.log('this is req.body: ', req.body);
-    console.log('this is req._events.data', req._events.data);
-    twiml.message('this is req.body: '+ req.body);
+
+    twiml.message('this is req.body.Body: '+ req.body.Body);
 
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(
