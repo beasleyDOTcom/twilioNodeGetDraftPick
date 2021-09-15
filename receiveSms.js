@@ -89,7 +89,13 @@ async function tryHost(room, index, message) {
         }
     }
 }
-
+function tryParticipant(room){
+    if(house[room]!== undefined){
+        return true
+    } else {
+        return false;
+    }
+}
 app.post('/sms', async (req, res) => {
 
     const twiml = new MessagingResponse();
