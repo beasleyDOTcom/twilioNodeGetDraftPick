@@ -76,6 +76,7 @@ async function tryHost(room, index, message, host) {
             password += message[index];
             index++;
         }
+        console.log('this is password: ', password)
         if (password.length > 0 && message[index] === ':') {
             // we can continue
             let command = '';
@@ -84,6 +85,7 @@ async function tryHost(room, index, message, host) {
                 command += message[index];
                 index++;
             }
+            console.log('this is command ', command)
             // inspect command
             if (command === 'open' || command === 'close') {
                 // command is good
@@ -94,7 +96,7 @@ async function tryHost(room, index, message, host) {
                     house[room] = [];
                     return 1;
                 }
-                if (command === 'close') {
+                else if (command === 'close') {
                     // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
                     return await tryCloseRoom(room, password, req.body.From);
                 }
@@ -133,7 +135,7 @@ app.post('/sms', async (req, res) => {
         room += message[index];
         index++;
     }
-    console.log('this is line109. ' + 'this is message: '+message +' and index: ' + index);
+    console.log('this is line36. ' + 'this is message: '+message +' and index: ' + index);
     if (message[index] === ':') {
         let response = await tryHost(room, index, message, req.body.From);
         switch(response){
@@ -157,10 +159,11 @@ app.post('/sms', async (req, res) => {
                 break;
             case 6:
  // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
+ console.log('this is the room: ', house[room])                
+
                 for(let i = 0; i < house[room].length; i++){
                     handleSendText(i+1, house[room][i]);
                 };
-                console.log('this is the room: ', house[room])                
                 twiml.message('Working on sending everyone their random numbers.');
                 break;
 
