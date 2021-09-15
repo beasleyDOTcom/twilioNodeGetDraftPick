@@ -45,7 +45,7 @@ async function tryCloseRoom(room, password, host){
 
 }
 
-async function tryHost(room, index, message) {
+async function tryHost(room, index, message, host) {
     if (house[room] === undefined) {
         // this is a new room. Are other requirements met? password and command
         let password = '';
@@ -67,11 +67,8 @@ async function tryHost(room, index, message) {
                 // command is good
                 if (command === 'open'){
 
-                    rooms[room] = {
-                        'password': password,
-                        'host': req.body.From
-                    }
-                    
+                    rooms[room] = {password, host};
+
                     house[room] = [];
                     return 1;
                 }
@@ -116,7 +113,7 @@ app.post('/sms', async (req, res) => {
     }
     console.log('this is line109. ' + 'this is message: '+message +' and index: ' + index);
     if (message[index] === ':') {
-        let response = await tryHost(room, index, message);
+        let response = await tryHost(room, index, message, req.body.From);
         switch(response){
             case 0:
                 twiml.message('Bad request. You must include a valid command. Example1 -> roomba:vacuum:open  Example2 -> roomba:vacuum:close');
