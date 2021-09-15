@@ -57,6 +57,7 @@ async function tryHost(room, index, message) {
         if (password.length > 0 && message[index] === ':') {
             // we can continue
             let command = '';
+            index += 1;
             while (index < message.length && message[index] !== ':') {
                 command += message[index];
                 index++;
