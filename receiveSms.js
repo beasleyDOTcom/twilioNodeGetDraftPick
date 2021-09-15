@@ -108,7 +108,7 @@ app.post('/sms', async (req, res) => {
         index++;
     }
     console.log('this is line109. ' + 'this is message: '+message +' and index: ' + index);
-    if (req.body[index] === ':') {
+    if (message[index] === ':') {
         let response = await tryHost(room, index, message);
         switch(response){
             case 0:
