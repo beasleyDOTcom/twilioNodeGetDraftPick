@@ -5,7 +5,7 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const PORT = process.env.PORT || 3003;
 
 const app = express();
-app.use(bodyParser, urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({extended:false}));
 
 app.post('/sms', (req, res) => {
     const twiml = new MessagingResponse();
