@@ -4,6 +4,26 @@ const bodyParser = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const PORT = process.env.PORT || 3003;
 
+
+const accountSid = process.env.SID;
+const authToken = process.env.authToken;
+
+const client = require('twilio')(accountSid, authToken);
+function handleSendText(number, phoneNumber){
+    client.messages.create({
+        to: phoneNumber,
+        from: process.env.twilioNumber,
+        body: number.toString(),
+    })
+    .then(
+        (message) => {
+            console.log('promise resolved');
+            console.log(message.sid)
+        }
+    );
+}
+
+
 const app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 
@@ -29,10 +49,12 @@ async function tryCloseRoom(room, password, host){
                     await swap(house[room], i, getIndex());
                     await swap(house[room], i, getIndex());
                 }
+            
     }
 // validate request
     if(rooms[room].password === password){
         if(rooms[room].host === host){
+            console.log('made it inside of if to confirm correct password and host', host, password);
             await shuffle();
             return 6;
         } else{
@@ -135,7 +157,9 @@ app.post('/sms', async (req, res) => {
                 break;
             case 6:
  // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
-
+                for(let i = 0; i < house[room].length; i++){
+                    handleSendText(i+1, house[room][i]);
+                };
                 console.log('this is the room: ', house[room])                
                 twiml.message('Working on sending everyone their random numbers.');
                 break;
