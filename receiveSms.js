@@ -106,7 +106,7 @@ app.post('/sms', async (req, res) => {
 
     let room = '';
     let index = 0;
-    let message = req.body.Body;
+    let message = req.body.Body.trim();
     while (index < message.length && message[index] !== ':') {
         room += message[index];
         index++;
@@ -158,7 +158,7 @@ app.post('/sms', async (req, res) => {
     res.end(
         twiml.toString()
     );
-});
+})
 
 http.createServer(app).listen(PORT, () => {
     console.log('Expressive server Glistening on port:', PORT)
