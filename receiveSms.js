@@ -90,7 +90,7 @@ async function tryHost(room, index, message) {
     }
 }
 
-app.post('/sms', (req, res) => {
+app.post('/sms', async (req, res) => {
 
     const twiml = new MessagingResponse();
 
