@@ -68,6 +68,7 @@ async function tryCloseRoom(room, password, host){
 }
 
 async function tryHost(room, index, message, host) {
+    console.log('inside of tryhost')
     if (house[room] === undefined) {
         // this is a new room. Are other requirements met? password and command
         let password = '';
