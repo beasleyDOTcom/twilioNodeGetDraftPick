@@ -72,7 +72,6 @@ async function tryHost(room, index, message, host) {
     if (house[room] === undefined) {
         // this is a new room. Are other requirements met? password and command
         let password = '';
-        index += 1;
         while (index < message.length && message[index] !== ':') {
             password += message[index];
             index++;
@@ -138,7 +137,7 @@ app.post('/sms', async (req, res) => {
     }
     console.log('this is line36. ' + 'this is message: '+message +' and index: ' + index);
     if (message[index] === ':') {
-        let response = await tryHost(room, index, message, req.body.From);
+        let response = await tryHost(room, index+1, message, req.body.From);
         switch(response){
             case 0:
                 twiml.message('Bad request. You must include a valid command. Example1 -> roomba:vacuum:open  Example2 -> roomba:vacuum:close');
@@ -167,6 +166,7 @@ app.post('/sms', async (req, res) => {
                 };
                 twiml.message('Working on sending everyone their random numbers.');
                 break;
+                default: console.log('ended up in the default case', response)
 
 
         }
