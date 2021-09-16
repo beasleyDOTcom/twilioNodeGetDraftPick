@@ -100,7 +100,7 @@ async function tryHost(room, index, message, host) {
             }
             else if (command === 'close') {
                 // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
-                return await tryCloseRoom(room, password, req.body.From);
+                return await tryCloseRoom(room, password, host);
             }
         } else {
             return 0;
