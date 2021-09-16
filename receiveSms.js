@@ -69,53 +69,55 @@ async function tryCloseRoom(room, password, host){
 
 async function tryHost(room, index, message, host) {
     console.log('inside of tryhost')
-    if (house[room] === undefined) {
-        // this is a new room. Are other requirements met? password and command
-        let password = '';
+
+    // are other requirements met? password and command
+    let password = '';
+    while (index < message.length && message[index] !== ':') {
+        password += message[index];
+        index++;
+    }
+    console.log('this is password: ', password)
+    if (password.length > 0 && message[index] === ':') {
+        // we can continue
+        let command = '';
+        index += 1;
         while (index < message.length && message[index] !== ':') {
-            password += message[index];
+            command += message[index];
             index++;
         }
-        console.log('this is password: ', password)
-        if (password.length > 0 && message[index] === ':') {
-            // we can continue
-            let command = '';
-            index += 1;
-            while (index < message.length && message[index] !== ':') {
-                command += message[index];
-                index++;
-            }
-            console.log('this is command ', command)
-            // inspect command
-            if (command === 'open' || command === 'close') {
-                // command is good
-                if (command === 'open'){
-
+        console.log('this is command ', command)
+        // inspect command
+        if (command === 'open' || command === 'close') {
+            // command is good
+            if (command === 'open'){
+                if(house[room] === undefined){
                     rooms[room] = {password, host};
-
                     house[room] = [];
                     return 1;
+                } else {
+                    return 7;
                 }
-                else if (command === 'close') {
-                    // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
-                    return await tryCloseRoom(room, password, req.body.From);
-                }
-            } else {
-                return 0;
             }
-        }
-        else {
-            console.log('this is password: ', password);
-            console.log('this is message[index]', message[index]);
-            // bad request
-            if (message[index] !== ':') {
-                return 2;
+            else if (command === 'close') {
+                // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
+                return await tryCloseRoom(room, password, req.body.From);
             }
-            else if (password.length < 1) {
-                return 3;
-            }
+        } else {
+            return 0;
         }
     }
+    else {
+        console.log('this is password: ', password);
+        console.log('this is message[index]', message[index]);
+        // bad request
+        if (message[index] !== ':') {
+            return 2;
+        }
+        else if (password.length < 1) {
+            return 3;
+        }
+    }
+    
 }
 function tryParticipant(room){
     if(house[room]!== undefined){
@@ -166,6 +168,8 @@ app.post('/sms', async (req, res) => {
                 };
                 twiml.message('Working on sending everyone their random numbers.');
                 break;
+            case 7:
+                twiml.message('Oops.. this room is taken! Please use a different name.')
                 default: console.log('ended up in the default case', response)
 
 
