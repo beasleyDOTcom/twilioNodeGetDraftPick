@@ -35,9 +35,8 @@ let rooms = {};
 You should get rid of the password requirement and just use the hosts phone number --> the security of their phone is all that's needed (password would be visible in texts anyways)
 
 */
-async function tryCloseRoom(room, password, host){
+async function tryCloseRoom(room, host){
     async function shuffle(){
-        // the shuffle in place by calling swap on every index of this.cards arr with a random index 
                 const getIndex = () => Math.floor(Math.random()*house[room].length);
                 const swap = async (arr, a, b) => {
                     let temp = arr[a];
@@ -52,37 +51,29 @@ async function tryCloseRoom(room, password, host){
             
     }
 // validate request
-    if(rooms[room].password === password){
-        if(rooms[room].host === host){
-            console.log('made it inside of if to confirm correct password and host', host, password);
-            await shuffle();
-            return 6;
-        } else{
-            return 5;
-        }
-    } else {
-        return 4;
+    if(rooms[room].host === host){
+        await shuffle();
+        return 6;
+    } else{
+        return 5;
     }
-    
-
 }
 
 async function tryHost(room, index, message, host) {
-    console.log('inside of tryhost')
 
     // are other requirements met? password and command
-    let password = '';
-    while (index < message.length && message[index] !== ':') {
-        password += message[index];
-        index++;
-    }
-    console.log('this is password: ', password)
-    if (password.length > 0 && message[index] === ':') {
+    // let password = '';
+    // while (index < message.length && message[index] !== ':') {
+    //     password += message[index];
+    //     index++;
+    // }
+    // if ().length > 0 && message[index] === ':') {
         // we can continue
         let command = '';
         index += 1;
-        while (index < message.length && message[index] !== ':') {
-            command += message[index];
+        while (index < message.length) {
+            // using toLowerCase in order to help prevent incedental errors from the phone's auto correct. 
+            command += message[index].toLowerCase();
             index++;
         }
         console.log('this is command ', command)
@@ -91,7 +82,7 @@ async function tryHost(room, index, message, host) {
             // command is good
             if (command === 'open'){
                 if(house[room] === undefined){
-                    rooms[room] = {password, host};
+                    rooms[room] = { host };
                     house[room] = [];
                     return 1;
                 } else {
@@ -100,23 +91,23 @@ async function tryHost(room, index, message, host) {
             }
             else if (command === 'close') {
                 // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
-                return await tryCloseRoom(room, password, host);
+                return await tryCloseRoom(room, host);
             }
         } else {
             return 0;
         }
-    }
-    else {
-        console.log('this is password: ', password);
-        console.log('this is message[index]', message[index]);
-        // bad request
-        if (message[index] !== ':') {
-            return 2;
-        }
-        else if (password.length < 1) {
-            return 3;
-        }
-    }
+    // }
+    // else {
+    //     console.log('this is password: ', password);
+    //     console.log('this is message[index]', message[index]);
+    //     // bad request
+    //     if (message[index] !== ':') {
+    //         return 2;
+    //     }
+    //     else if (password.length < 1) {
+    //         return 3;
+    //     }
+    // }
     
 }
 function tryParticipant(room){
@@ -161,7 +152,6 @@ app.post('/sms', async (req, res) => {
                 break;
             case 6:
  // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
- console.log('this is the room: ', house[room])                
 
                 for(let i = 0; i < house[room].length; i++){
                     handleSendText(i+1, house[room][i]);
