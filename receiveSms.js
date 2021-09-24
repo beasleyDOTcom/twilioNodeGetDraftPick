@@ -133,19 +133,19 @@ app.post('/sms', async (req, res) => {
         let response = await tryHost(room, index+1, message, req.body.From);
         switch(response){
             case 0:
-                twiml.message('Bad request. You must include a valid command. Example1 -> roomba:vacuum:open  Example2 -> roomba:vacuum:close');
+                twiml.message('Bad request. You must include a valid command. Example1 -> roomba:open  Example2 -> roomba:close');
                 break;
             case 1:
-                twiml.message('Room has been opened. Whenever everyone has received a confirmation text that they are in the room you may close the room to send everyone their number in the form of room:password:close');
+                twiml.message('Room has been opened. Whenever everyone has received a confirmation text that they are in the room you may close the room to send everyone their number in the form of room:close');
                 break;
             case 2:
-                twiml.message('Please include your command with request example: room1:password1:open');
+                twiml.message('Please include your command with request example: room1:open');
                 break;
             case 3:
-                twiml.message('Bad request. You must include a password to open a room. example: "room11:bestPasswordEver:open"');
+                twiml.message('Bad request. You must include a password to open a room. example: "room11:open"');
                 break;
             case 4:
-                twiml.message('Wront password for this room. Please enter the password you used to open the room to close it in the form of: room:passwordYouChose:close');
+                twiml.message('Wront password for this room. Please enter the password you used to open the room to close it in the form of: room:close');
                 break;
             case 5:
                 twiml.message('Only the host can open or close a room. Please use the phone the room was opened with to close it.');
@@ -160,7 +160,8 @@ app.post('/sms', async (req, res) => {
                 break;
             case 7:
                 twiml.message('Oops.. this room is taken! Please use a different name.')
-                default: console.log('ended up in the default case', response)
+                
+            default: console.log('ended up in the default case', response)
 
 
         }
