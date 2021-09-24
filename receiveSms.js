@@ -70,8 +70,8 @@ async function tryHost(room, index, message, host) {
     // if ().length > 0 && message[index] === ':') {
         // we can continue
         let command = '';
-        index += 1;
         while (index < message.length) {
+            
             // using toLowerCase in order to help prevent incedental errors from the phone's auto correct. 
             command += message[index].toLowerCase();
             index++;
