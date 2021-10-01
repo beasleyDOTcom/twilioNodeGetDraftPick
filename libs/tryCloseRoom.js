@@ -1,4 +1,4 @@
-async function tryCloseRoom(room, host) {
+async function tryCloseRoom(room, host, rooms) {
     async function shuffle() {
         const getIndex = () => Math.floor(Math.random() * house[room].length);
         const swap = async (arr, a, b) => {
