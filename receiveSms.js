@@ -26,6 +26,7 @@ app.post('/sms', async (req, res) => {
     }
     console.log('this is line36. ' + 'this is message: ' + message + ' and index: ' + index);
     if (message[index] === ':') {
+        // the only one who should be including a ':' in their sms should be the host. validate the host and the command.
         let response = await tryHost(room, index + 1, message, req.body.From, house, rooms);
         switch (response) {
             case 0:
@@ -63,7 +64,7 @@ app.post('/sms', async (req, res) => {
         }
     }
     else {
-        let response = tryParticipant(room);
+        let response = tryParticipant(room, house);
         if (response) {
             house[room].push(req.body.From);
             twiml.message('You have been added. Please wait for host to "close the room" (at which time you will receive your random number');

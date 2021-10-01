@@ -1,4 +1,4 @@
-function tryParticipant(room) {
+function tryParticipant(room, house) {
     if (house[room] !== undefined) {
         return true
     } else {
