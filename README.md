@@ -26,4 +26,30 @@ Once the host closes the room:
 
 
 # codebase structure
-I'm going to clean up the main page by importing most of the functions
+- [x] I'm going to clean up the main page by moving most of the helper functions to libs and then importing most of the functions back in.
+
+# data structure
+venues, performers, open mics nights, time slots, 
+venues have -< open mics(physical or not)
+an open mic -< has time slots
+time slots -< have performers, day/time, available(bool)
+performers -< have time slots, display names
+
+
+
+- [x] setup table with unique id, display name, and phone number as a string
+
+## What are some of the queries that I hope to perform?
+- [ ] INSERT INTO unique_id_of_venue VALUES (hosts, )
+- [ ] create an entry that represents an instance of open_mic which will include a host (hosts?) and participants
+- [ ] select every user who is attached to this instance of open mic
+- [ ] SELECT * FROM open mic instance WHERE available = true
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+open mic will have a uniqie id, display_name, host_phone, host_name, age_restriction, start, end, time_slots
+
+# today's unfinished work
+erd
+there's no client.connect setup yet (setup client.listen to start after the database has successfuly connected)

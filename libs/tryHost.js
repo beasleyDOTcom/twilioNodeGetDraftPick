@@ -1,6 +1,6 @@
 const tryCloseRoom = require('./tryCloseRoom');
 
-async function tryHost(room, index, message, host, house) {
+async function tryHost(room, index, message, host, house, rooms) {
 
     // we can continue
     let command = '';
@@ -25,7 +25,7 @@ async function tryHost(room, index, message, host, house) {
         }
         else if (command === 'close') {
             // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
-            return await tryCloseRoom(room, host);
+            return await tryCloseRoom(room, host, rooms);
         }
     } else {
         return 0;

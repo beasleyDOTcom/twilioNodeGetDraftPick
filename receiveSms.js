@@ -4,11 +4,24 @@ const bodyParser = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const PORT = process.env.PORT || 3003;
 
+const { Client } = require('pg');
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl:{
+        rejectUnauthorized: false
+    }
+});
+
+client.on('eror', error => {
+    console.log('this is the error that occured: ', error);
+})
+
+const Queue = require('./libs/queue');
 const tryParticipant = require('./libs/tryParticipant');
 const tryHost = require('./libs/tryHost');
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: true}));
 
 let house = {};
 let rooms = {};
@@ -26,7 +39,8 @@ app.post('/sms', async (req, res) => {
     }
     console.log('this is line36. ' + 'this is message: ' + message + ' and index: ' + index);
     if (message[index] === ':') {
-        let response = await tryHost(room, index + 1, message, req.body.From, house);
+        // the only one who should be including a ':' in their sms should be the host. validate the host and the command.
+        let response = await tryHost(room, index + 1, message, req.body.From, house, rooms);
         switch (response) {
             case 0:
                 twiml.message('Bad request. You must include a valid command. Example1 -> roomba:open  Example2 -> roomba:close');
@@ -63,7 +77,7 @@ app.post('/sms', async (req, res) => {
         }
     }
     else {
-        let response = tryParticipant(room);
+        let response = tryParticipant(room, house);
         if (response) {
             house[room].push(req.body.From);
             twiml.message('You have been added. Please wait for host to "close the room" (at which time you will receive your random number');
