@@ -4,119 +4,15 @@ const bodyParser = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const PORT = process.env.PORT || 3003;
 
-
-const accountSid = process.env.SID;
-const authToken = process.env.authToken;
-
-const client = require('twilio')(accountSid, authToken);
-function handleSendText(number, phoneNumber) {
-    client.messages.create({
-        to: phoneNumber,
-        from: process.env.twilioNumber,
-        body: number.toString(),
-    })
-        .then(
-            (message) => {
-                console.log('promise resolved');
-                console.log(message.sid)
-            }
-        );
-}
-
-
+const tryParticipant = require('./libs/tryParticipant');
+const tryHost = require('./libs/tryHost');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
 let house = {};
 let rooms = {};
-/*
-*************************
-You should get rid of the password requirement and just use the hosts phone number --> the security of their phone is all that's needed (password would be visible in texts anyways)
 
-*/
-async function tryCloseRoom(room, host) {
-    async function shuffle() {
-        const getIndex = () => Math.floor(Math.random() * house[room].length);
-        const swap = async (arr, a, b) => {
-            let temp = arr[a];
-            arr[a] = arr[b];
-            arr[b] = temp;
-            return arr;
-        }
-        for (let i = 0; i < house[room].length; i++) {
-            await swap(house[room], i, getIndex());
-            await swap(house[room], i, getIndex());
-        }
-
-    }
-    // validate request
-    if (rooms[room].host === host) {
-        await shuffle();
-        return 6;
-    } else {
-        return 5;
-    }
-}
-
-async function tryHost(room, index, message, host) {
-
-    // are other requirements met? password and command
-    // let password = '';
-    // while (index < message.length && message[index] !== ':') {
-    //     password += message[index];
-    //     index++;
-    // }
-    // if ().length > 0 && message[index] === ':') {
-    // we can continue
-    let command = '';
-    while (index < message.length) {
-
-        // using toLowerCase in order to help prevent incedental errors from the phone's auto correct. 
-        command += message[index].toLowerCase();
-        index++;
-    }
-    console.log('this is command ', command)
-    // inspect command
-    if (command === 'open' || command === 'close') {
-        // command is good
-        if (command === 'open') {
-            if (house[room] === undefined) {
-                rooms[room] = { host };
-                house[room] = [];
-                return 1;
-            } else {
-                return 7;
-            }
-        }
-        else if (command === 'close') {
-            // shuffle array of phone numbers, then text each of them their index+1, then delete room from house.
-            return await tryCloseRoom(room, host);
-        }
-    } else {
-        return 0;
-    }
-    // }
-    // else {
-    //     console.log('this is password: ', password);
-    //     console.log('this is message[index]', message[index]);
-    //     // bad request
-    //     if (message[index] !== ':') {
-    //         return 2;
-    //     }
-    //     else if (password.length < 1) {
-    //         return 3;
-    //     }
-    // }
-
-}
-function tryParticipant(room) {
-    if (house[room] !== undefined) {
-        return true
-    } else {
-        return false;
-    }
-}
 app.post('/sms', async (req, res) => {
 
     const twiml = new MessagingResponse();
@@ -130,7 +26,7 @@ app.post('/sms', async (req, res) => {
     }
     console.log('this is line36. ' + 'this is message: ' + message + ' and index: ' + index);
     if (message[index] === ':') {
-        let response = await tryHost(room, index + 1, message, req.body.From);
+        let response = await tryHost(room, index + 1, message, req.body.From, house);
         switch (response) {
             case 0:
                 twiml.message('Bad request. You must include a valid command. Example1 -> roomba:open  Example2 -> roomba:close');
