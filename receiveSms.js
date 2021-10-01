@@ -4,12 +4,20 @@ const bodyParser = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const PORT = process.env.PORT || 3003;
 
+const { Client } = require('pg');
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl:{
+        rejectUnauthorized: false
+    }
+});
+
 const Queue = require('./libs/queue');
 const tryParticipant = require('./libs/tryParticipant');
 const tryHost = require('./libs/tryHost');
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: true}));
 
 let house = {};
 let rooms = {};
