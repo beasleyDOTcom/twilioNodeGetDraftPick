@@ -22,3 +22,7 @@ Once the host closes the room:
 - [ ] hosts can send participants of open mic one of several predetermined messages related to open mic.
 - [ ] participants can quit open mic once they respond to a confirmation text that they'd not like to participate.
 - [ ] participants can request that they not be texted about the open mic (for example, someone get's drunk and takes someone elses guitar home with them on accident. The host can choose to send the participant a text saying "you've forgotten something at open mic")
+
+
+# codebase structure
+I'm going to clean up the main page by importing most of the functions
