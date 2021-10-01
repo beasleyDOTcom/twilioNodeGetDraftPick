@@ -1,6 +1,6 @@
 # twilioNodeGetDraftPick
 
-This service should allow a host to turn on the service, allowing participants to text a password to the service and receive a draft pick once the host sends his/her password to close signups.
+Phase 1 of this project is completed and can be deployed from the basicFunctionality branch which allows a host to turn on the service, allowing participants to text a password to the service and receive a random number once the host sends his/her password to close signups.
 
 # sign up via text
 ok so this service should allow a host to open a room that users may enter by texting the room code to the service.
