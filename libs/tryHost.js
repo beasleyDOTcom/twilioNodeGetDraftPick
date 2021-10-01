@@ -1,6 +1,6 @@
 const tryCloseRoom = require('./tryCloseRoom');
 
-async function tryHost(room, index, message, host, house) {
+async function tryHost(room, index, message, host, house, rooms) {
 
     // we can continue
     let command = '';

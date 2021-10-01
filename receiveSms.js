@@ -26,7 +26,7 @@ app.post('/sms', async (req, res) => {
     }
     console.log('this is line36. ' + 'this is message: ' + message + ' and index: ' + index);
     if (message[index] === ':') {
-        let response = await tryHost(room, index + 1, message, req.body.From, house);
+        let response = await tryHost(room, index + 1, message, req.body.From, house, rooms);
         switch (response) {
             case 0:
                 twiml.message('Bad request. You must include a valid command. Example1 -> roomba:open  Example2 -> roomba:close');
