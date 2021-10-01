@@ -12,6 +12,10 @@ const client = new Client({
     }
 });
 
+client.on('eror', error => {
+    console.log('this is the error that occured: ', error);
+})
+
 const Queue = require('./libs/queue');
 const tryParticipant = require('./libs/tryParticipant');
 const tryHost = require('./libs/tryHost');
