@@ -1,5 +1,6 @@
 # twilioNodeGetDraftPick
-This service should allow a host to turn on the service, allowing participants to text a password to the service and receive a draft pick once the host sends his password to close signups.
+
+This service should allow a host to turn on the service, allowing participants to text a password to the service and receive a draft pick once the host sends his/her password to close signups.
 
 # sign up via text
 ok so this service should allow a host to open a room that users may enter by texting the room code to the service.
