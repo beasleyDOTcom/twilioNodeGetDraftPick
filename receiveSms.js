@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const PORT = process.env.PORT || 3003;
 
+const Queue = require('./libs/queue');
 const tryParticipant = require('./libs/tryParticipant');
 const tryHost = require('./libs/tryHost');
 const app = express();
