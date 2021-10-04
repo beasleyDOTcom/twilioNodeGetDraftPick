@@ -14,7 +14,9 @@ function handleSendText(number, phoneNumber) {
                 console.log('promise resolved');
                 console.log(message.sid)
             }
-        );
+        ).catch( error => {
+            console.error("Congratulations! You've met an error: ", error)
+        })
 }
 
 module.exports = handleSendText
