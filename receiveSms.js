@@ -1,6 +1,6 @@
 const http = require('http');
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const PORT = process.env.PORT || 3003;
 
@@ -12,9 +12,9 @@ const client = new Client({
     }
 });
 
-client.on('eror', error => {
-    console.log('this is the error that occured: ', error);
-})
+client.on('error', e => {
+    console.log('had an error creating establishing client. Exited with error: ', e);
+});
 
 const Queue = require('./libs/queue');
 const tryParticipant = require('./libs/tryParticipant');
@@ -91,10 +91,12 @@ app.post('/sms', async (req, res) => {
     res.end(
         twiml.toString()
     );
-}).catch( error => {
-    console.error("Congratulations! You've met an error: ", error)
-})
-
-http.createServer(app).listen(PORT, () => {
-    console.log('Expressive server Glistening on port:', PORT)
 });
+
+// this should wait for the database to turn on successfully before starting the server.
+// client.connect()
+// .then( () => {
+    http.createServer(app).listen(PORT, () => {
+        console.log('Expressive server Glistening on port:', PORT)
+    });
+// }).catch((err) => console.log('Error connecting to database: ', err));
