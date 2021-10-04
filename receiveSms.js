@@ -91,6 +91,8 @@ app.post('/sms', async (req, res) => {
     res.end(
         twiml.toString()
     );
+}).catch( error => {
+    console.error("Congratulations! You've met an error: ", error)
 })
 
 http.createServer(app).listen(PORT, () => {
